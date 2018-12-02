@@ -8,4 +8,4 @@ for(let i=0; seen.indexOf(acc)==seen.lastIndexOf(acc); i=i+1%changes.length){
 	seen.push(acc);
 }
 
-console.log(seen[seen.length-1]);
+console.log(seen.pop());
