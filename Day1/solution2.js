@@ -1,11 +1,19 @@
-const changes=require("fs").readFileSync("input2.txt","utf8").split("\r\n");
+let changes=require("fs").readFileSync("input2.txt","utf8").split("\r\n");
 
-let acc=0;
-let seen=[acc];
+let cycle=[];
+let offset=0;
 
-for(let i=0; seen.indexOf(acc)==seen.lastIndexOf(acc); i=i+1%changes.length){
-	acc+=parseInt(changes[i%changes.length]);
-	seen.push(acc);
+changes.forEach(e=>{
+	offset+=parseInt(e);
+	cycle.push(offset);
+});
+
+for(let i=1;;i++){
+	cycle.forEach(e=>{
+		let current=e+(offset*i);
+		if(cycle.includes(current)){
+			console.log(current);
+			process.exit();
+		}
+	});
 }
-
-console.log(seen.pop());
