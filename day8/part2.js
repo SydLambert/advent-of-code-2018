@@ -3,7 +3,7 @@ let input=require("fs").readFileSync("input2.txt","utf8").split(" ").map(e=>pars
 let parse=(raw,childNodeCount)=>{
 	let childNodes=[];
 	for(let i=0;i<childNodeCount;i++){
-		if(raw[0]==0){
+		if(!raw[0]){
 			childNodes.push({
 				childNodeCount:0,
 				childNodes:[],

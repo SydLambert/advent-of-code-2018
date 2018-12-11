@@ -3,7 +3,7 @@ let input=require("fs").readFileSync("input1.txt","utf8").split(" ").map(e=>pars
 let parse=(raw,childNodeCount)=>{
 	let childNodes=[];
 	for(let i=0;i<childNodeCount;i++){
-		if(raw[0]==0){
+		if(!raw[0]){
 			childNodes.push({
 				childNodeCount:0,
 				childNodes:[],
@@ -29,12 +29,10 @@ let parse=(raw,childNodeCount)=>{
 
 let tree=parse(input,1).childNodes[0];
 
-let addMetaData=node=>{
-	let total=node.metaData.reduce((a,e)=>a+e,0);
-	node.childNodes.forEach(e=>
-		total+=addMetaData(e)
+let addMetaData=node=>
+	node.childNodes.reduce((a,e)=>
+		a+addMetaData(e)
+		,node.metaData.reduce((a,e)=>a+e,0)
 	);
-	return total;
-}
 
 console.log(addMetaData(tree));
