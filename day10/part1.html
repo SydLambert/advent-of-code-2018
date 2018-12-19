@@ -1,0 +1,57 @@
+<style>
+  body{background-color: grey;}
+  canvas{background-color: white;}
+</style>
+<canvas width="640px" height="480px"></canvas>
+<script>
+  const canvas=document.querySelector("canvas");
+  const ctx=canvas.getContext("2d");
+
+  let points;
+  let ticks=0;
+
+  let tick=()=>{
+    points=points.map(e=>{
+      e.x+=e.vx;
+      e.y+=e.vy;
+      return e;
+    });
+  }
+
+  let render=()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    points.forEach((e,i,a)=>{
+      ctx.fillRect(
+        ((e.x-Math.min(a[0].x,0))-Math.max(a[0].x,0))+canvas.width/2,
+        ((e.y-Math.min(a[0].y,0))-Math.max(a[0].y,0))+canvas.height/2,
+        1,
+        1
+      );
+    });
+  }
+
+  fetch("./input1.txt").then(async response=>{
+    let input=await response.text();
+    points=input.split("\n").slice(0,-1).map(e=>{
+    	console.log(e);
+    	let pos=e.split("<")[1].split(">")[0].split(",").map(e=>parseInt(e));
+    	let vel=e.split("<")[2].split(">")[0].split(",").map(e=>parseInt(e));
+    	return {
+    		x:pos[0],
+    		y:pos[1],
+    		vx:vel[0],
+    		vy:vel[1]
+    	}
+    });
+    for(let i=0;i<10300;i++){
+      ticks++;
+      tick();
+    }
+    setInterval(()=>{
+      console.log(ticks);
+      render();
+      ticks++;
+      tick();
+    },500);
+  });
+</script>
